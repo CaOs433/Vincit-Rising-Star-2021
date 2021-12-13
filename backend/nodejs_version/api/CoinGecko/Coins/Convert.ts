@@ -97,12 +97,13 @@ const getMarketRows = (prices: number[][], bear: boolean): MarketRow[] => {
             // Add the row into array
             rows.push({ start: row_start, end: row_end, change: value_change, days: day_count });
 
-            console.log(
+            // Print values
+            /*console.log(
                 '\nStart:\t\t', new Date(row_start).toLocaleString(), '\tPrice: ', row_start_value,
                 '\nEnd:\t\t', new Date(row_end).toLocaleString(), '\tPrice: ', ((day_count) ? price[1] : row_start_value),
                 (day_count) ? '' : `\nNext:\t\t ${new Date(price[0]).toLocaleString()} \tPrice:  ${price[1]}`,
                 '\nDay count:\t', day_count
-            );
+            );*/
 
             // Begin a new row
             row_start = price[0];
@@ -245,5 +246,3 @@ export function getAllFromRangeJSON(data: string): Types.Output.All | undefined 
     }
 
 }
-
-

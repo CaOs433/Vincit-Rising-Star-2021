@@ -68,7 +68,13 @@ const getMarketRows = (prices, bear) => {
             const day_count = (((row_end - row_start) / MILLIS_IN_DAY) | 0); // +1;
             // Add the row into array
             rows.push({ start: row_start, end: row_end, change: value_change, days: day_count });
-            console.log('\nStart:\t\t', new Date(row_start).toLocaleString(), '\tPrice: ', row_start_value, '\nEnd:\t\t', new Date(row_end).toLocaleString(), '\tPrice: ', ((day_count) ? price[1] : row_start_value), (day_count) ? '' : `\nNext:\t\t ${new Date(price[0]).toLocaleString()} \tPrice:  ${price[1]}`, '\nDay count:\t', day_count);
+            // Print values
+            /*console.log(
+                '\nStart:\t\t', new Date(row_start).toLocaleString(), '\tPrice: ', row_start_value,
+                '\nEnd:\t\t', new Date(row_end).toLocaleString(), '\tPrice: ', ((day_count) ? price[1] : row_start_value),
+                (day_count) ? '' : `\nNext:\t\t ${new Date(price[0]).toLocaleString()} \tPrice:  ${price[1]}`,
+                '\nDay count:\t', day_count
+            );*/
             // Begin a new row
             row_start = price[0];
             row_start_value = price[1];
