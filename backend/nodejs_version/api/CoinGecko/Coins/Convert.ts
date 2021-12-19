@@ -128,7 +128,7 @@ const maxChange = (arr: number[][]) => {
     // Smallest value
     let min_val = arr[0][1];
     // Dates of min and max value
-    let min_date = -1, max_date = -1;
+    let min_date = arr[0][0], max_date = -1;
     // Min value date for return value
     let min_date_rtn = -1;
     // Loop through the data

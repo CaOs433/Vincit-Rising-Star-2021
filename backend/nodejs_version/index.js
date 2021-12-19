@@ -2,12 +2,14 @@
 
 const express = require('express');
 const path = require('path');
+const cors = require('cors');
 
 const MarketChart = require('./api/CoinGecko/Coins/MarketChart');
 
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.use(cors());
 app.use(express.static("public"));
 
 
