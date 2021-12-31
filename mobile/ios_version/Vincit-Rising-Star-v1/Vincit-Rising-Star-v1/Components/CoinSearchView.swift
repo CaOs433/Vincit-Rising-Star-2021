@@ -34,10 +34,13 @@ struct CoinSearchView: View {
     func searchCoins() {
         //self.showSearch.toggle()
         if self.fetchedCoins == nil || self.fetchedCoins?.list.count == 0 {
-            self.loading = true
             // Execute on background
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
+                    // Execute on main
+                    DispatchQueue.main.async {
+                        self.loading = true
+                    }
                     self.fetchedCoins = try CoinList()
                 } catch {
                     print(error.localizedDescription)
@@ -93,6 +96,19 @@ struct CoinSearchView: View {
         }
     }
     
+    /// Search results
+    var searchResults: [CoinList.Coin] {
+        if let list = fetchedCoins?.list {
+            if searchText.isEmpty {
+                return list
+            } else {
+                return list.filter { ($0.name ?? "").lowercased().contains(searchText.lowercased()) }
+            }
+        } else  {
+            return []
+        }
+    }
+    
     var searchView: some View {
         VStack {
             if fetchedCoins == nil {
@@ -105,9 +121,15 @@ struct CoinSearchView: View {
                             HStack {
                                 Text(c.name ?? "-")
                                 Spacer()
-                                Button(action: {
-                                    saveCoin(nCoin: c)
-                                }) { Text("Add") }
+                                if coinsContains(c: c) {
+                                    Button(action: {
+                                        deleteCoin(c: c)
+                                    }) { Text("Delete") }
+                                } else {
+                                    Button(action: {
+                                        saveCoin(nCoin: c)
+                                    }) { Text("Add") }
+                                }
                             }.background(Color.black.opacity(0.07))
                         }
                     }.background(Color.blue.opacity(0.07))
@@ -119,9 +141,15 @@ struct CoinSearchView: View {
                             HStack {
                                 Text(c.name ?? "-")
                                 Spacer()
-                                Button(action: {
-                                    saveCoin(nCoin: c)
-                                }) { Text("Add") }
+                                if coinsContains(c: c) {
+                                    Button(action: {
+                                        deleteCoin(c: c)
+                                    }) { Text("Delete") }
+                                } else {
+                                    Button(action: {
+                                        saveCoin(nCoin: c)
+                                    }) { Text("Add") }
+                                }
                             }.background(Color.black.opacity(0.07))
                         }
                     }.background(Color.blue.opacity(0.07))
@@ -148,7 +176,63 @@ struct CoinSearchView: View {
                 ProgressView().progressViewStyle(.circular)
             } else {
                 if fetchedCoins != nil {
-                    List {
+                    // searchable requires atleast iOS 15
+                    if #available(iOS 15.0, *) {
+                        List {
+                            ForEach(searchResults) { c in
+                                HStack {
+                                    Text(c.name ?? "-").tag(c.name)
+                                    Spacer()
+                                    if coinsContains(c: c) {
+                                        Button(action: {
+                                            deleteCoin(c: c)
+                                        }) { Text("Delete") }
+                                    } else {
+                                        Button(action: {
+                                            saveCoin(nCoin: c)
+                                        }) { Text("Add") }
+                                    }
+                                }.background(Color.black.opacity(0.07))
+                            }
+                        }.background(Color.blue.opacity(0.07))
+                            .searchable(text: $searchText) {
+                                ForEach(searchResults) { c in
+                                    HStack {
+                                        Text(c.name ?? "-").searchCompletion(c.name ?? "-")
+                                        Spacer()
+                                        if coinsContains(c: c) {
+                                            Button(action: {
+                                                deleteCoin(c: c)
+                                            }) { Text("Delete") }
+                                        } else {
+                                            Button(action: {
+                                                saveCoin(nCoin: c)
+                                            }) { Text("Add") }
+                                        }
+                                    }.background(Color.black.opacity(0.07))
+                                }
+                            }
+                    } else {
+                        // Fallback on earlier versions
+                        List {
+                            ForEach(searchResults) { c in
+                                HStack {
+                                    Text(c.name ?? "-")
+                                    Spacer()
+                                    if coinsContains(c: c) {
+                                        Button(action: {
+                                            deleteCoin(c: c)
+                                        }) { Text("Delete") }
+                                    } else {
+                                        Button(action: {
+                                            saveCoin(nCoin: c)
+                                        }) { Text("Add") }
+                                    }
+                                }.background(Color.black.opacity(0.07))
+                            }
+                        }.background(Color.blue.opacity(0.07))
+                    }
+                    /*List {
                         ForEach(fetchedCoins!.list) { c in
                             HStack {
                                 Text(c.name ?? "-")
@@ -164,7 +248,7 @@ struct CoinSearchView: View {
                                 }
                             }.background(Color.black.opacity(0.07))
                         }
-                    }.background(Color.blue.opacity(0.07))
+                    }.background(Color.blue.opacity(0.07))*/
                 } else {
                     Text("No data")
                 }

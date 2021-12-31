@@ -21,6 +21,8 @@ struct MainView: View {
     /// End date for the fetch
     @State private var endDate: Date = Date()
     
+    @State private var loading: Bool = false
+    
     /// Last selected coin name from User Defaults
     @AppStorage("coinName") private var coinName = "Bitcoin"
     /// Last selected coin id from User Defaults
@@ -39,6 +41,11 @@ struct MainView: View {
             // Update button
             Button("Update", action: update).font(.title2)
             
+            // Loading circle
+            if self.loading {
+                ProgressView().progressViewStyle(.circular)
+            }
+            
             // Output:
             if assignments != nil {
                 OutputView(assignments: $assignments)
@@ -53,14 +60,24 @@ struct MainView: View {
     func update() {
         // Is the start date before end date?
         if startDate <= endDate {
-            do {
-                // Fetch and parse data
-                self.assignments = try Assignments(from: Int(startDate.timeIntervalSince1970), to: Int(endDate.timeIntervalSince1970), coin: coin, vs_currency: currency)
-            } catch {
-                // An error occurred, print it into console
-                print(error.localizedDescription)
+            // Execute on background
+            DispatchQueue.global(qos: .userInitiated).async {
+                do {
+                    // Execute on main
+                    DispatchQueue.main.async {
+                        self.loading = true
+                    }
+                    // Fetch and parse data
+                    self.assignments = try Assignments(from: Int(startDate.timeIntervalSince1970), to: Int(endDate.timeIntervalSince1970), coin: coin, vs_currency: currency)
+                } catch {
+                    // An error occurred, print it into console
+                    print(error.localizedDescription)
+                }
+                // Execute on main
+                DispatchQueue.main.async {
+                    self.loading = false
+                }
             }
-            
         }
     }
     
