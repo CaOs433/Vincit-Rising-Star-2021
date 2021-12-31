@@ -39,7 +39,7 @@ struct MainView: View {
             InputView(startDate: $startDate, endDate: $endDate)
             
             // Update button
-            Button("Update", action: update).font(.title2)
+            Button("Update", action: update).font(.title2).disabled(loading || !(startDate<endDate))
             
             // Loading circle
             if self.loading {
@@ -48,7 +48,7 @@ struct MainView: View {
             
             // Output:
             if assignments != nil {
-                OutputView(assignments: $assignments)
+                OutputView(assignments: $assignments, startDate: $startDate, endDate: $endDate)
             }
             
             Spacer()
@@ -59,7 +59,7 @@ struct MainView: View {
     /// Update data
     func update() {
         // Is the start date before end date?
-        if startDate <= endDate {
+        if startDate < endDate {
             // Execute on background
             DispatchQueue.global(qos: .userInitiated).async {
                 do {
@@ -67,6 +67,8 @@ struct MainView: View {
                     DispatchQueue.main.async {
                         self.loading = true
                     }
+                    print("startDate.timeIntervalSince1970: ", startDate.timeIntervalSince1970)
+                    print("endDate.timeIntervalSince1970: ", endDate.timeIntervalSince1970)
                     // Fetch and parse data
                     self.assignments = try Assignments(from: Int(startDate.timeIntervalSince1970), to: Int(endDate.timeIntervalSince1970), coin: coin, vs_currency: currency)
                 } catch {

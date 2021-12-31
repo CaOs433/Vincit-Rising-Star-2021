@@ -9,6 +9,16 @@ import Foundation
 
 /// Milliseconds in a day
 let MILLIS_IN_DAY = 86400000
+let SECONDS_IN_DAY = 86400
+
+/// Removes time from date and adds one hour
+func rmTimeFromDate(_ val: Int) -> Int {
+    let rtn = Int(floor(Double(val / SECONDS_IN_DAY)) * Double(SECONDS_IN_DAY) + 3600)
+    
+    print("val: ", val, "\trtn: ", rtn)
+    
+    return rtn
+}
 
 struct Assignments {
     let a: A
@@ -16,7 +26,7 @@ struct Assignments {
     let c: C
     
     init(from: Int, to: Int, coin: String = "bitcoin", vs_currency: String = "eur") throws {
-        let raw = try RAW(from: from, to: to, coin: coin, vs_currency: vs_currency)
+        let raw = try RAW(from: rmTimeFromDate(from), to: rmTimeFromDate(to), coin: coin, vs_currency: vs_currency)
         
         self.a = raw.getA()
         self.b = raw.getB()
@@ -95,6 +105,8 @@ extension Assignments.RAW {
                 filtered[midnight_date] = x[1]
             }
         }
+        
+        print("filtered: ", filtered)
 
         // Return filtered dictionary
         return filtered
@@ -162,12 +174,35 @@ extension Assignments.RAW {
             row_end = price.key
             latest_value = price.value
         }
+        
+        // If the latest row wasn't added into the rows array
+        if !rows.contains(where: { $0.start == row_start && $0.end == row_end }) {
+            // Price change of the row
+            let value_change = (bear) ? row_start_value-latest_value : latest_value-row_start_value
+            // If there was a price change
+            if value_change > 0 {
+                // Number of days in the row
+                let day_count = (((row_end - row_start) / MILLIS_IN_DAY) | 0)
+                // Add the row into array
+                rows.append(MarketRow(start: row_start, end: row_end, change: value_change, days: day_count))
+            }
+        }
+        
+        print("rows: ", rows)
+        
+        if rows.isEmpty {
+            print("rows was empty\n\nfilteredPrices: ")
+            for price in filteredPrices.sorted( by: { $0.0 < $1.0 }) {
+                print(price)
+            }
+        }
 
         return rows
     }
     
     func maxChange(_ arr: [Int:Double]) -> (start: Int, end: Int, change: Double, risePercent: Double)? {
-        // Return undefined if there's less than 2 values in the array
+        print("maxChange, arr.count: ", arr.count)
+        // Return nil if there's less than 2 values in the array
         if (arr.count < 2) { return nil }
         
         let sorted = arr.sorted(by: { $0.0 < $1.0 })
@@ -176,6 +211,8 @@ extension Assignments.RAW {
         var max_change: Double = -1
         // Smallest value
         var min_val: Double = sorted[0].1, max_val: Double = sorted[0].1
+        // Smallest return value
+        var min_val_rtn: Double = sorted[0].1
         // Dates of min and max value
         var min_date: Int = Int(sorted[0].0), max_date: Int = -1
         // Min value date for return value
@@ -192,6 +229,8 @@ extension Assignments.RAW {
                 max_date = Int(n.0)
                 // Save min value date (the return variable)
                 min_date_rtn = min_date
+                // Save min value (the return variable)
+                min_val_rtn = min_val
             }
             // Is the current value smaller than the smallest so far value?
             if (n.1 < min_val) {
@@ -203,13 +242,22 @@ extension Assignments.RAW {
         }
         
         // Calculate value rise in percents
-        let rise_percent: Double = 100 / min_val * max_val
+        let rise_percent: Double = (100 / min_val_rtn * max_val) - 100
         
-        print("""
-        start:\t\(min_val) €
-        end:\t\(max_val) €
+        /*print("""
+        start:
+        min_date_rtn:\t\(min_date_rtn)
+        min_val:\t\(min_val) €
+        min_val_rtn:\t\(min_val_rtn) €
+        arr[min_date_rtn]: \t\(String(describing: arr[min_date_rtn])) €
+        
+        end:
+        max_date:\t\(max_date)
+        max_val:\t\(max_val) €
+        arr[max_date]: \(String(describing: arr[max_date])) €
+        
         rise:\t\(rise_percent) %
-        """)
+        """)*/
 
         // Return the results (max_change is extra)
         return (start: min_date_rtn, end: max_date, change: max_change, risePercent: rise_percent)
@@ -264,7 +312,7 @@ extension Assignments.RAW {
         if let _arr = arr {
             print(_arr)
             // Was the buy and sell dates defined? (default values are -1)
-            if (_arr.start > 0 && _arr.end > 0) {
+            if (_arr.start > 0 && _arr.end > 0 && _arr.risePercent > 0) {
                 // Return the buy and sell date
                 return Assignments.C(buy_date: _arr.start, sell_date: _arr.end, rise_percent: _arr.risePercent)
             }

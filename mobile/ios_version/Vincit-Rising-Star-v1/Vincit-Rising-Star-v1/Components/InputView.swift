@@ -22,6 +22,10 @@ struct InputView: View {
         return calendar.date(from:startComponents)! ... Date()
     }()
     
+    var datesOk: Bool {
+        return startDate < endDate
+    }
+    
     var body: some View {
         VStack {
             // Picker for start date
@@ -37,6 +41,9 @@ struct InputView: View {
                 displayedComponents: [.date],
                 label: { Text("End Date") }
             )
+            if !datesOk {
+                Text("Start date must be before end date!").foregroundColor(.red)
+            }
         }.padding()
             .background(Color.blue.opacity(0.04))
     }

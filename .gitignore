@@ -33,5 +33,6 @@ testi/
 testi_*
 
 *.vectornator
+*.paint
 
 *.zip
