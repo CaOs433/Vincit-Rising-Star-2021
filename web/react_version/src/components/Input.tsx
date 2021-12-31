@@ -26,12 +26,13 @@ export default function InputView(props: Props) {
 
     React.useEffect(() => {
         if (start && end) {
-            if (start <= end) {
+            if (start < end) {
+                console.log(`User typed:\nstart date: ${start}\nend date: ${end}`);
                 setDatesErr("");
                 setDateErr(false);
                 props.setOutputOk(true);
-                props.setStartDate(start);
-                props.setEndDate(end);
+                props.setStartDate(start+3600);
+                props.setEndDate(end+3600);
             } else {
                 setDatesErr("Start date must be before end date");
                 setDateErr(true);

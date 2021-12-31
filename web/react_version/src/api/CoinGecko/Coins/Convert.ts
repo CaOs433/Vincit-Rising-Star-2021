@@ -115,6 +115,25 @@ const getMarketRows = (prices: number[][], bear: boolean): MarketRow[] => {
         latest_value = price[1];
     }
 
+    let contains = false;
+    for (const row of rows) {
+        if (row.start === row_start && row.end === row_end)
+            contains = true
+    }
+
+    // If the latest row wasn't added into the rows array
+    if (!contains) {
+        // Price change of the row
+        const value_change = (bear) ? row_start_value-latest_value : latest_value-row_start_value;
+        // If there was a price change
+        if (value_change > 0) {
+            // Number of days in the row
+            const day_count = (((row_end - row_start) / MILLIS_IN_DAY) | 0);
+            // Add the row into array
+            rows.push({ start: row_start, end: row_end, change: value_change, days: day_count });
+        }
+    }
+
     return rows;
 }
 
