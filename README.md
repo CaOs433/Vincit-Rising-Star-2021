@@ -9,11 +9,17 @@ I made multiple versions for different enviroments:
 
 From the readme-links above, you can find instructions for how to run them locally
 
-<hr>The iOS app will be in the AppStore after Apple has reviewed it (it takes usually 1-2 days)
+<hr>
 
-<hr>The nodejs and react versions are running at [Heroku](https://vincit-rising-star.herokuapp.com/)
+The iOS app will be in the [AppStore](https://itunes.apple.com/us/developer/oskari-saarinen/id1234576917) after Apple has reviewed it (it takes usually 1-2 days)
 
-<hr>The API can be used as follows:
+<hr>
+
+The nodejs and react versions are running at [Heroku](https://vincit-rising-star.herokuapp.com/)
+
+<hr>
+
+The API can be used as follows:
 
 * Assignment a) - `curl https://vincit-rising-star.herokuapp.com/get/a?from=start_date&to=end_date`
 * Assignment b) - `curl https://vincit-rising-star.herokuapp.com/get/b?from=start_date&to=end_date`
@@ -30,10 +36,19 @@ You can also give:
 * `coin`: default is `bitcoin`
 * `vs_currency`: default is `eur`
 
+<hr>
 
-## Instructions
+The CoinGecko API documentation can be found here: [https://www.coingecko.com/en/api/documentation](https://www.coingecko.com/en/api/documentation)
+
+<hr>
+
+
+## License MIT
+
 
 <!--
+## Instructions
+
 <div style="position:absolute;left:20px;top:120px;width:596px;height:842px;border-style:outset;overflow:hidden">
     <div style="position:absolute;left:0px;top:0px">
         <img src="readme_images/background1.jpg" width=596 height=842></div>
