@@ -17,7 +17,7 @@ struct MainView: View {
     @State private var assignments: Assignments?
     
     /// Start date for the fetch
-    @State private var startDate: Date = Date()
+    @State private var startDate: Date = Date(timeIntervalSince1970: 1638316800)
     /// End date for the fetch
     @State private var endDate: Date = Date()
     
