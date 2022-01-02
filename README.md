@@ -13,6 +13,8 @@ From the readme-links above, you can find instructions for how to run them local
 
 The iOS app will be in the [AppStore](https://itunes.apple.com/us/developer/oskari-saarinen/id1234576917) after Apple has reviewed it (it takes usually 1-2 days)
 
+<b>Edit: Apple has approved the app and it can now be downloaded from the App Store: [Crypto Time Machine](https://apps.apple.com/en/app/crypto-time-machine/id1602419673)</b>
+
 <hr>
 
 The nodejs and react versions are running at [Heroku](https://vincit-rising-star.herokuapp.com/)
