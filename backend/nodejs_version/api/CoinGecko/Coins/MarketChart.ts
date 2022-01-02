@@ -5,7 +5,14 @@ import axios from '../../../node_modules/axios/index';
 
 const BASE_URL = 'https://api.coingecko.com/api/v3/coins';
 
-
+/**
+ *
+ * @param from start date for the range in timestamp (seconds since 1970)
+ * @param to end date for the range in timestamp (seconds since 1970)
+ * @param coin cryptocurrency id (default is bitcoin)
+ * @param vs_currency the currency to show the values in (default is eur)
+ * @returns all data parsed in TypeScript interface
+ */
 export async function getData(
     from: string | number,
     to: string | number,

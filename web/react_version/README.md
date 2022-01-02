@@ -1,3 +1,47 @@
+# WEB - React version
+
+Web app made with `React` & `TypeScript`.
+
+Beside of pure `CSS`, I also used some `Bootstrap` elements to make it look good on all screen sizes.<br><br>
+
+The app is running at Heroku: [https://vincit-rising-star.herokuapp.com/](https://vincit-rising-star.herokuapp.com/)
+
+The source codes are well documented on code level.
+
+The app has 3 main components:
+
+* App - Main container
+* InputView - Container for date inputs
+* OutputView - Container for output data
+
+<img alt="component_structure" src="readme_images/components_structure.drawio.svg" />
+
+<br>
+
+## Running locally
+
+The app can be runned locally as all React apps:
+
+On terminal, type:
+
+`cd path_to_the_*react_version*_folder`
+
+`npm start` or if you prefer Yarn: `yarn start`
+
+after the app starts, it can be viewed in browser: [http://localhost:3000](http://localhost:3000)
+
+<br>
+
+## Screenshots
+
+<img alt="img-1" src="readme_images/1.png" />
+
+<img alt="img-2" src="readme_images/2.png" />
+
+<img alt="img-3" src="readme_images/3.png" />
+
+<img alt="img-4" src="readme_images/4.png" />
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).

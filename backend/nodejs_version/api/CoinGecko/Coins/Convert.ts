@@ -78,7 +78,7 @@ const getMarketRows = (prices: number[][], bear: boolean): MarketRow[] => {
     let latest_value = -1;
     for (const price of filteredPrices) {
         // On the first iteration, set start values
-        if (latest_value == -1) {
+        if (latest_value === -1) {
             row_start = price[0];
             row_end = price[0];
             row_start_value = price[1];
@@ -113,6 +113,25 @@ const getMarketRows = (prices: number[][], bear: boolean): MarketRow[] => {
         // Save latest values
         row_end = price[0];
         latest_value = price[1];
+    }
+
+    let contains = false;
+    for (const row of rows) {
+        if (row.start === row_start && row.end === row_end)
+            contains = true
+    }
+
+    // If the latest row wasn't added into the rows array
+    if (!contains) {
+        // Price change of the row
+        const value_change = (bear) ? row_start_value-latest_value : latest_value-row_start_value;
+        // If there was a price change
+        if (value_change > 0) {
+            // Number of days in the row
+            const day_count = (((row_end - row_start) / MILLIS_IN_DAY) | 0);
+            // Add the row into array
+            rows.push({ start: row_start, end: row_end, change: value_change, days: day_count });
+        }
     }
 
     return rows;
@@ -192,7 +211,7 @@ function getB(data: Types.MarketChart.Range): Types.Output.B {
     const maxVal = total_volumes.pop() ?? [-1, -1];
 
     // Return the date and price
-    return { day: maxVal[0], value: maxVal[1] }
+    return { date: maxVal[0], value: maxVal[1] }
 }
 
 /**
@@ -208,11 +227,14 @@ function getC(data: Types.MarketChart.Range): Types.Output.C {
 
     // Was the data defined?
     if (arr) {
+        console.log(arr);
         // Was the buy and sell dates defined? (default values are -1)
         if (arr.start > 0 && arr.end > 0) {
             // Return the buy and sell date
             return { buy_date: arr.start, sell_date: arr.end };
         }
+    } else {
+        console.log('arr not defined');
     }
 
     // Should not trade

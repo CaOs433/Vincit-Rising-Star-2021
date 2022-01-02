@@ -1,17 +1,30 @@
 import React from 'react';
 
+/**
+ * InputView props
+ */
 interface Props {
     setStartDate: Function;
     setEndDate: Function;
     setOutputOk: Function;
 }
 
+/**
+ *
+ * @param props useState functions from the parent view
+ * @returns InputView for the date range
+ */
 export default function InputView(props: Props) {
+    // Start date (timestamp)
     const [start, setStart] = React.useState<number>();
+    // End date (timestamp)
     const [end, setEnd] = React.useState<number>();
+    // Error text for input check
     const [datesErr, setDatesErr] = React.useState<string>("");
+    // Are the dates right
     const [dateErr, setDateErr] = React.useState<boolean>(false);
 
+    // CSS style for date input (red borders if start is not before end date)
     const getInputStyle = (ok: boolean): React.CSSProperties => {
         return {
             border: "2px solid",
@@ -24,6 +37,7 @@ export default function InputView(props: Props) {
         };
     };
 
+    // Execute when user changes date range
     React.useEffect(() => {
         if (start && end) {
             if (start < end) {
@@ -31,7 +45,7 @@ export default function InputView(props: Props) {
                 setDatesErr("");
                 setDateErr(false);
                 props.setOutputOk(true);
-                props.setStartDate(start+3600);
+                props.setStartDate(start);
                 props.setEndDate(end+3600);
             } else {
                 setDatesErr("Start date must be before end date");
@@ -60,17 +74,16 @@ export default function InputView(props: Props) {
                     {datesErr}
                 </div>
             </div>
-            {/*<div>
-                <label htmlFor="date" className="form-label">Date:</label>
-                <input type="date" className="form-control" id="date" name="date" />
-            </div>*/}
         </div>
     );
 }
 
+/**
+ * CSS styles for InputView
+ */
 const styles: { [key: string]: React.CSSProperties } = {
     container: {
-        backgroundColor: "#DDDDEECC",//"#FF0000CC",//"#2C4",
+        backgroundColor: "#DDDDEECC",
         padding: "12px",
         borderRadius: "12px",
         width: "fit-content"

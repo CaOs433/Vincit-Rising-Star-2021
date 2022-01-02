@@ -189,6 +189,9 @@ function getA(data: Types.MarketChart.Range): Types.Output.A {
     const allRows = getMarketRows(data.prices, true);
     // Sort the array by the days value from smallest to highest
     allRows.sort((a, b) => a.days - b.days);
+    /*for (const r of allRows) {
+        console.log(`Row: ${r.days},\t${r.change} €`);
+    }*/
     // Get the biggest value or -1 if the array was empty
     const last = allRows.pop();
     console.log('Last: ', last);

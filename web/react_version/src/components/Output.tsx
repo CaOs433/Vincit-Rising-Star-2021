@@ -1,25 +1,39 @@
 import React from "react";
 
+// Bootstrap components
 import { Spinner, Row, Col } from "react-bootstrap";
 
 import { Output as Types } from '../api/CoinGecko/Coins/type';
 import { getData } from '../api/CoinGecko/Coins/MarketChart';
 
+/**
+ * OutputView props
+ */
 interface Props {
     startDate: number;
     endDate: number;
 }
 
+/**
+ *
+ * @param props start and end date
+ * @returns OutputView for the assignments data
+ */
 export default function OutputView(props: Props) {
+    // Start date
     const [startDate, setStartDate] = React.useState<number>(-1);
+    // End date
     const [endDate, setEndDate] = React.useState<number>(-1);
 
+    // Assignments data:
     const [a, setA] = React.useState<Types.A>({ days: -1 });
     const [b, setB] = React.useState<Types.B>({ date: -1, value: -1 });
     const [c, setC] = React.useState<Types.C>({ buy_date: -1, sell_date: -1, should_trade: false });
 
+    // Is the data currently loading
     const [loading, setLoading] = React.useState<boolean>(false);
 
+    // Fetch and set the data
     const updateData = async (start: number, end: number) => {
         setLoading(true);
         const data = await getData(start, end);
@@ -31,6 +45,7 @@ export default function OutputView(props: Props) {
         setLoading(false);
     }
 
+    // Get JSX elements for assignments c
     const getC = () => {
         console.log(c);
         if (c.buy_date && c.sell_date) {
@@ -48,6 +63,7 @@ export default function OutputView(props: Props) {
         }
     }
 
+    // Get date string from timestamp
     const getDateStr = (date: number, time: boolean = false) => {
         const dt = new Date(date);
         if (date > 0)
@@ -56,6 +72,7 @@ export default function OutputView(props: Props) {
             return "-";
     }
 
+    // Get JSX elements for all assignments
     const getJSX = () => {
         if (loading) {
             return <h3>Loading... <Spinner animation="grow" variant="light" /></h3>;
@@ -91,6 +108,7 @@ export default function OutputView(props: Props) {
         }
     }
 
+    // Execute when props changes (start and end dates)
     React.useEffect(() => {
         if (props.startDate > 0 && props.endDate > 0) {
             if (props.startDate <= props.endDate) {
@@ -110,10 +128,13 @@ export default function OutputView(props: Props) {
     );
 }
 
+/**
+ * CSS styles for OutputView
+ */
 const styles: { [key: string]: React.CSSProperties } = {
     container: {
-        backgroundColor: "#DDDDEECC",//"#FF0000CC",//"#CC2244CC",
-        color: "#333",//"#f0f0f2",
+        backgroundColor: "#DDDDEECC",
+        color: "#333",
         borderRadius: "12px",
         borderWidth: "4px",
         borderColor: "#222",

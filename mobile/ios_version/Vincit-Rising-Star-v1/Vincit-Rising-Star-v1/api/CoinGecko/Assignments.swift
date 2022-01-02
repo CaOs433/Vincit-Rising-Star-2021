@@ -90,6 +90,7 @@ extension Assignments {
 }
 
 extension Assignments.RAW {
+    /// Returns dictionary with only the first value of a day
     func filterDublicateDates(_ arr: [[Double]]) -> [Int:Double] {
         // Dictionary for filtered values
         var filtered: [Int:Double] = [:]
@@ -144,7 +145,9 @@ extension Assignments.RAW {
 
         // Latest price (value on the last iteration)
         var latest_value: Double = -1
+        print("for price in filteredPrices.sorted( by: { $0.0 < $1.0 }) {")
         for price in filteredPrices.sorted( by: { $0.0 < $1.0 }) {
+            print(price)
             // On the first iteration, set start values
             if (latest_value == -1) {
                 row_start = price.key
@@ -160,7 +163,7 @@ extension Assignments.RAW {
                 // Price change of the row
                 let value_change = (bear) ? row_start_value-latest_value : latest_value-row_start_value
                 // Number of days in the row
-                let day_count = (((row_end - row_start) / MILLIS_IN_DAY) | 0)// +1
+                let day_count = Int(floor(Double((row_end - row_start)) / Double(MILLIS_IN_DAY)))
 
                 // Add the row into array
                 rows.append(MarketRow(start: row_start, end: row_end, change: value_change, days: day_count))
@@ -176,15 +179,20 @@ extension Assignments.RAW {
         }
         
         // If the latest row wasn't added into the rows array
-        if !rows.contains(where: { $0.start == row_start && $0.end == row_end }) {
+        if !rows.contains(where: { /*$0.start == row_start &&*/ $0.end == row_end }) {
+            print("if !rows.contains...")
             // Price change of the row
             let value_change = (bear) ? row_start_value-latest_value : latest_value-row_start_value
             // If there was a price change
             if value_change > 0 {
                 // Number of days in the row
-                let day_count = (((row_end - row_start) / MILLIS_IN_DAY) | 0)
+                let day_count = Int(floor(Double((row_end - row_start)) / Double(MILLIS_IN_DAY)))
+                let newRow = MarketRow(start: row_start, end: row_end, change: value_change, days: day_count)
+                print("newRow: ", newRow)
                 // Add the row into array
-                rows.append(MarketRow(start: row_start, end: row_end, change: value_change, days: day_count))
+                rows.append(newRow)
+            } else {
+                print("if value_change > 0: FALSE\nvalue_change: ", value_change)
             }
         }
         

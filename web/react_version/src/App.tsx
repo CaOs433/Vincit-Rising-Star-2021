@@ -1,15 +1,25 @@
 import React from 'react';
 import "bootstrap/dist/css/bootstrap.min.css";
 
+// Bootstrap components
 import { Container, Row, Col, Navbar } from 'react-bootstrap';
 
+// Input View for date range
 import InputView from './components/Input';
+// Output View for the data
 import OutputView from './components/Output';
 
+/**
+ *
+ * @returns Main view of the app
+ */
 export default function App() {
+  // Start date
   const [startDate, setStartDate] = React.useState<number>(-1);
+  // End date
   const [endDate, setEndDate] = React.useState<number>(-1);
 
+  // Is the input ok
   const [inputOk, setInputOk] = React.useState<boolean>(false);
 
   return (
@@ -50,39 +60,33 @@ export default function App() {
   );
 }
 
+/**
+ * CSS styles for App
+ */
 const styles: { [key: string]: React.CSSProperties } = {
   body: {
     marginLeft: 0,
     marginRight: 0,
     width: "100%",
     height: "100%",
-    paddingTop: 20,
-    //backgroundColor: "#FF0000CC",//"#eee"//"#AA22CCAA"
-    //backgroundImage: "url(/bg.svg)"
+    paddingTop: 20
   },
   main: {
     marginLeft: "0px",
     marginBottom: "40px",
-    marginTop: "0px",
-    //backgroundColor: "#FF0000CC"
+    marginTop: "0px"
   },
   header: {
-    //display: "flex", //"block"
-    //position: "relative",
     borderTopLeftRadius: "40px",
     borderTopRightRadius: "40px",
     borderBottomLeftRadius: "0px",
-    borderBottomRightRadius: "0px",
-    //marginBottom: 0
+    borderBottomRightRadius: "0px"
   },
   container: {
-    backgroundColor: "#A12",//"#1133DDBB",//"#2244CCBB",
-    textAlign: "center",
-    //marginTop: 0
+    backgroundColor: "#A12",
+    textAlign: "center"
   },
   footer: {
-    //display: "flex",//"block",
-    //position: "relative",
     borderTopLeftRadius: "0px",
     borderTopRightRadius: "0px",
     borderBottomLeftRadius: "30px",

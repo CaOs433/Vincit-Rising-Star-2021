@@ -27,7 +27,7 @@ export namespace Output {
      * Assignment b)
      */
     export interface B {
-        day: number;
+        date: number;
         value: number;
     }
 

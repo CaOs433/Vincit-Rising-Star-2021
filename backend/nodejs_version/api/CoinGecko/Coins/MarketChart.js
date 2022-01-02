@@ -35,6 +35,14 @@ exports.getData = void 0;
 const Convert = __importStar(require("./Convert"));
 const index_1 = __importDefault(require("../../../node_modules/axios/index"));
 const BASE_URL = 'https://api.coingecko.com/api/v3/coins';
+/**
+ *
+ * @param from start date for the range in timestamp (seconds since 1970)
+ * @param to end date for the range in timestamp (seconds since 1970)
+ * @param coin cryptocurrency id (default is bitcoin)
+ * @param vs_currency the currency to show the values in (default is eur)
+ * @returns all data parsed in TypeScript interface
+ */
 function getData(from, to, coin = 'bitcoin', vs_currency = 'eur') {
     return __awaiter(this, void 0, void 0, function* () {
         // Full URL
