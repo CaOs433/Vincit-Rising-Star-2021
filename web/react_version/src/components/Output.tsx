@@ -45,6 +45,9 @@ export default function OutputView(props: Props) {
         setLoading(false);
     }
 
+    // If v > -1 returns the v, otherwise returns "-"
+    const getVal = (v: number) => (-1 < v) ? v : "-";
+
     // Get JSX elements for assignments c
     const getC = () => {
         console.log(c);
@@ -66,7 +69,8 @@ export default function OutputView(props: Props) {
     // Get date string from timestamp
     const getDateStr = (date: number, time: boolean = false) => {
         const dt = new Date(date);
-        if (date > 0)
+        // 1230940800000 is 03-01-2009 (the release date of Bitcoin)
+        if (date >= 1230940800000)
             return (time) ? dt.toLocaleString('fi-FI', { timeZone: 'UTC' }) : dt.toLocaleDateString('fi-FI');
         else
             return "-";
@@ -84,14 +88,14 @@ export default function OutputView(props: Props) {
                         <Col>
                             <div style={styles.outputGroup}>
                                 <h4>A</h4>
-                                <p>price dropped <span style={styles.value}>{a.days}</span> days in row.</p>
+                                <p>price dropped <span style={styles.value}>{getVal(a.days)}</span> days in row.</p>
                             </div>
                         </Col>
                         {/*<hr />*/}
                         <Col>
                             <div style={styles.outputGroup}>
                                 <h4>B</h4>
-                                <p>highest trading volume was on <span style={styles.value}>{getDateStr(b.date)}</span> with <span style={styles.value}>{b.value}</span> euros.</p>
+                                <p>highest trading volume was on <span style={styles.value}>{getDateStr(b.date)}</span> with <span style={styles.value}>{getVal(b.value)}</span> euros.</p>
                             </div>
                         </Col>
                         {/*<hr />*/}
@@ -139,7 +143,8 @@ const styles: { [key: string]: React.CSSProperties } = {
         borderWidth: "4px",
         borderColor: "#222",
         padding: "12px",
-        width: "fit-content"
+        width: "fit-content",
+        margin: "auto"
     },
     outputs: {
         backgroundColor: "#DDDDDDBB",

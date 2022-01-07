@@ -12,12 +12,12 @@ let MILLIS_IN_DAY = 86400000
 let SECONDS_IN_DAY = 86400
 
 /// Removes time from date and adds one hour
-func rmTimeFromDate(_ val: Int) -> Int {
-    let rtn = Int(floor(Double(val / SECONDS_IN_DAY)) * Double(SECONDS_IN_DAY) + 3600)
+func rmTimeFromDate(_ val: Int, _ add1h: Bool = false) -> Int {
+    let rtn = Int(floor(Double(val / SECONDS_IN_DAY)) * Double(SECONDS_IN_DAY))
     
-    print("val: ", val, "\trtn: ", rtn)
+    print("val: ", val, "\trtn: ", (add1h ? rtn + 3600 : rtn))
     
-    return rtn
+    return add1h ? rtn + 3600 : rtn
 }
 
 struct Assignments {
@@ -26,7 +26,7 @@ struct Assignments {
     let c: C
     
     init(from: Int, to: Int, coin: String = "bitcoin", vs_currency: String = "eur") throws {
-        let raw = try RAW(from: rmTimeFromDate(from), to: rmTimeFromDate(to), coin: coin, vs_currency: vs_currency)
+        let raw = try RAW(from: rmTimeFromDate(from), to: rmTimeFromDate(to, true), coin: coin, vs_currency: vs_currency)
         
         self.a = raw.getA()
         self.b = raw.getB()
@@ -127,7 +127,12 @@ extension Assignments.RAW {
     func getMarketRows(prices: [[Double]], bear: Bool) -> [MarketRow] {
         // Filtered prices (we only need the first value of each day in the data)
         let filteredPrices: [Int : Double] = filterDublicateDates(prices)
-
+        
+        // Can't continue with less than 2 values
+        if filteredPrices.count < 2 {
+            return []
+        }
+ 
         // Compare as bear or bull market (bear market if bear is true, otherwise bull)
         let compare = { (current: Double, last: Double) -> Bool in
             return (bear) ? (current>last) : (current<last)
@@ -203,6 +208,7 @@ extension Assignments.RAW {
             for price in filteredPrices.sorted( by: { $0.0 < $1.0 }) {
                 print(price)
             }
+            rows.append(MarketRow(start: -1, end: -1, change: -1, days: 0))
         }
 
         return rows

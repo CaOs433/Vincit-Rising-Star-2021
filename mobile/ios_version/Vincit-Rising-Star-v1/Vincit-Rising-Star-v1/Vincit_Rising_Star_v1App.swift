@@ -11,7 +11,7 @@ import SwiftUI
 struct Vincit_Rising_Star_v1App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView().preferredColorScheme(.light)
+            ContentView().preferredColorScheme(.light).navigationViewStyle(StackNavigationViewStyle())
         }
     }
 }

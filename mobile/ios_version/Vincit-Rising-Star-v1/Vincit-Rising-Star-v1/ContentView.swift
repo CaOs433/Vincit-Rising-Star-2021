@@ -55,6 +55,7 @@ struct ContentView: View {
                                 .labelStyle(IconOnlyLabelStyle())
                         }
                 ).navigationBarTitleDisplayMode(.inline)
+                .navigationViewStyle(StackNavigationViewStyle())
             
         }
             

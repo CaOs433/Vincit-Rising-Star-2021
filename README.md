@@ -30,8 +30,18 @@ The API can be used as follows:
 
 where
 
-* `start_date`: start date of the range in seconds
-* `end_date`: end date of the range in seconds
+* `start_date`: start date of the range
+* `end_date`: end date of the range
+
+the date format can be in a `timestamp` (seconds since 1970) or in a date string: `yyyy-mm-dd` or `yyyy/mm/dd`.
+
+So, for example to get range between 01-12-2021 and 31-12-2021, you can use:
+
+* `timestamp`:  `curl "https://vincit-rising-star.herokuapp.com/get/all?from=1638316800&to=1640908800"`
+* `yyyy-mm-dd`: `curl "https://vincit-rising-star.herokuapp.com/get/all?from=2021-12-01&to=2021-12-31"`
+* `yyyy/mm/dd`: `curl "https://vincit-rising-star.herokuapp.com/get/all?from=2021/12/01&to=2021/12/31"`
+
+You can convert other dates into timestamp in here: [https://www.unixtimestamp.com](https://www.unixtimestamp.com).
 
 You can also give:
 

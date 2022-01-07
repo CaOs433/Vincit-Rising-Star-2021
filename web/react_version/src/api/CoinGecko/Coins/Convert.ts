@@ -61,6 +61,11 @@ const getMarketRows = (prices: number[][], bear: boolean): MarketRow[] => {
     // Filtered prices (we only need the first value of each day in the data)
     const filteredPrices = filterDublicateDates(prices);
 
+    // Can't continue with only one value
+    if (filteredPrices.length < 2) {
+        return [];
+    }
+
     // Compare as bear or bull market (bear market if bear is true, otherwise bull)
     const compare = (current: number, last: number) => (bear) ? (current>last) : (current<last);
 

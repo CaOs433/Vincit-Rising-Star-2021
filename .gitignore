@@ -38,3 +38,9 @@ testi_*
 *.zip
 
 *.drawio
+
+*.xcuserstate
+
+screenshots/
+
+vanha_*

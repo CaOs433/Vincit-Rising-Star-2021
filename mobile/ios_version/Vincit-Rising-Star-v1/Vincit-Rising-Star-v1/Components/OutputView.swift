@@ -43,13 +43,14 @@ struct OutputView: View {
     /// Parsed string value from assignments.b.date
     var dateStr: String {
         guard let date = assignments?.b.date else { return "-" }
-        return Date(timeIntervalSince1970: TimeInterval(date / 1000)).strVal
+        // 1230940800000 is 03-01-2009 (the release date of Bitcoin)
+        return (date > 1230940800000) ? Date(timeIntervalSince1970: TimeInterval(date / 1000)).strVal : "-"
     }
     
     /// Parsed string value from assignments.b.value
     var valueStr: String {
         guard let val = assignments?.b.value else { return "-" }
-        return (val >= 0) ? String(val) : "_"
+        return (val >= 0) ? String(val) : "-"
     }
     
     
@@ -59,8 +60,9 @@ struct OutputView: View {
     var shouldTrade: Bool? {
         
         if let buyDate = assignments?.c.buy_date, let sellDate = assignments?.c.sell_date {
-            if buyDate > 0 && sellDate > 0 {
-                return buyDate <= sellDate
+            // 1230940800 is 03-01-2009 (the release date of Bitcoin)
+            if buyDate > 1230940800 && sellDate > 1230940800 {
+                return buyDate < sellDate
             }
         }
         

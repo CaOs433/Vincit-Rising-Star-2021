@@ -24,9 +24,11 @@ The app can be runned locally as all React apps:
 
 On terminal, type:
 
-`cd path_to_the_*react_version*_folder`
+go into the folder: `cd path_to_the_*react_version*_folder`
 
-`npm start` or if you prefer Yarn: `yarn start`
+build the app: `npm install` or if you prefer Yarn: `yarn install`
+
+start the app: `npm start` or if you prefer Yarn: `yarn start`
 
 after the app starts, it can be viewed in browser: [http://localhost:3000](http://localhost:3000)
 

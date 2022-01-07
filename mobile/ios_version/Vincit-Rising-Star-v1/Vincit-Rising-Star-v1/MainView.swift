@@ -30,6 +30,18 @@ struct MainView: View {
     /// Last selected vs_currency from User Defaults
     @AppStorage("currency") private var currency = "eur"
     
+    // Is the date inputs ok
+    var inputOk: Bool {
+        // Today
+        let now = Date()
+        // Is the start date after end date or are the dates in future
+        if startDate>=endDate || now < startDate || now < endDate || startDate.strValShort == endDate.strValShort {
+            return false
+        }
+        // All ok
+        return true
+    }
+    
     var body: some View {
         VStack {
             // Current coin
@@ -39,7 +51,7 @@ struct MainView: View {
             InputView(startDate: $startDate, endDate: $endDate)
             
             // Update button
-            Button("Update", action: update).font(.title2).disabled(loading || !(startDate<endDate))
+            Button("Update", action: update).font(.title2).disabled(loading || !inputOk)
             
             // Loading circle
             if self.loading {
@@ -47,7 +59,7 @@ struct MainView: View {
             }
             
             // Output:
-            if assignments != nil {
+            if assignments != nil && inputOk {
                 OutputView(assignments: $assignments, startDate: $startDate, endDate: $endDate)
             }
             
@@ -69,6 +81,9 @@ struct MainView: View {
                     }
                     print("startDate.timeIntervalSince1970: ", startDate.timeIntervalSince1970)
                     print("endDate.timeIntervalSince1970: ", endDate.timeIntervalSince1970)
+                    print("startDate.strVal: ", startDate.strValShort)
+                    print("endDate.strVal: ", endDate.strValShort)
+                    
                     // Fetch and parse data
                     self.assignments = try Assignments(from: Int(startDate.timeIntervalSince1970), to: Int(endDate.timeIntervalSince1970), coin: coin, vs_currency: currency)
                 } catch {

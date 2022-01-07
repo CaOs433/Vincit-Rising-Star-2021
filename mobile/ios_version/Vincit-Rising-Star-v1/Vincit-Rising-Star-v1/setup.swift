@@ -44,10 +44,19 @@ extension UIColor {
 }
 
 extension Date {
-    /// Date to string value
+    /// Date to string value (in UTC)
     public var strVal: String {
         let f = DateFormatter()
         f.dateStyle = .medium
+        f.timeZone = TimeZone(identifier: "UTC")
+        return f.string(from: self)
+    }
+    
+    /// Date to string value in short format (in UTC)
+    public var strValShort: String {
+        let f = DateFormatter()
+        f.dateStyle = .short
+        f.timeZone = TimeZone(identifier: "UTC")
         return f.string(from: self)
     }
 }

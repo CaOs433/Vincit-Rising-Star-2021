@@ -5,6 +5,7 @@ const path = require('path');
 const cors = require('cors');
 
 const MarketChart = require('./api/CoinGecko/Coins/MarketChart');
+const checkDates = require('./validateDates').checkDates;
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -20,14 +21,24 @@ const fetchAndCheck = async (rtnType, req, response) => {
     // The currency to show prices in (default is Euro)
     const vs_currency = req.query.vs_currency || 'eur';
     // From date
-    const from = req.query.from;
+    const from_raw = req.query.from;
     // To date
-    const to = req.query.to;
+    const to_raw = req.query.to;
 
     // Was the 'from' and 'to' query parameters defined?
-    if (from === undefined && to === undefined) {
+    /*if (from === undefined || to === undefined) {
         console.log(from, '\t', to);
         response.send({ error: "Missing 'from' and/or 'to' -parameters" });
+        return;
+    }*/
+
+    // Validate dates
+    const {errors, from, to} = checkDates(from_raw, to_raw);
+
+    // If there was any errors, send them for the client and quit the function
+    if (0 < errors.length) {
+        console.log("from: ", from, '\t', "to: ", to, "\nErrors: ", errors);
+        response.send({ error: errors });
         return;
     }
 
