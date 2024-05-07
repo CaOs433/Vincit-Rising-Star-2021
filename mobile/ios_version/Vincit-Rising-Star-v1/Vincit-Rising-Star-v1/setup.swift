@@ -77,3 +77,9 @@ extension String: Error {}
         return self.hash
     }
 }*/
+
+extension Date {
+    var todayMinus360Days: Date {
+        Calendar.current.date(byAdding: .day, value: -360, to: Date()) ?? Date()
+    }
+}

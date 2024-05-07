@@ -20,7 +20,7 @@ struct MainView: View {
     @State private var apiError: APIError?
     
     /// Start date for the fetch
-    @State private var startDate: Date = Date(timeIntervalSince1970: 1638316800)
+    @State private var startDate: Date = Date().todayMinus360Days
     /// End date for the fetch
     @State private var endDate: Date = Date()
     
