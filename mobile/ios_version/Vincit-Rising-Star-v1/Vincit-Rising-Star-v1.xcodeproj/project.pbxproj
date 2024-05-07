@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F66EB022BEA62D100D57F5C /* APIErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F66EB012BEA62D100D57F5C /* APIErrorView.swift */; };
 		3FF8A80C2773ECE900A35C92 /* Vincit_Rising_Star_v1App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8A80B2773ECE900A35C92 /* Vincit_Rising_Star_v1App.swift */; };
 		3FF8A80E2773ECE900A35C92 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FF8A80D2773ECE900A35C92 /* ContentView.swift */; };
 		3FF8A8102773ECED00A35C92 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3FF8A80F2773ECED00A35C92 /* Assets.xcassets */; };
@@ -26,6 +27,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		3F66EB012BEA62D100D57F5C /* APIErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIErrorView.swift; sourceTree = "<group>"; };
 		3FF8A8082773ECE900A35C92 /* Vincit-Rising-Star-v1.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Vincit-Rising-Star-v1.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		3FF8A80B2773ECE900A35C92 /* Vincit_Rising_Star_v1App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vincit_Rising_Star_v1App.swift; sourceTree = "<group>"; };
 		3FF8A80D2773ECE900A35C92 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -121,6 +123,7 @@
 			children = (
 				3FF8A823277B974100A35C92 /* InputView.swift */,
 				3FF8A821277B93E900A35C92 /* OutputView.swift */,
+				3F66EB012BEA62D100D57F5C /* APIErrorView.swift */,
 				3FF8A829277CDA3500A35C92 /* MenuView.swift */,
 				3FF8A83E277E460300A35C92 /* CoinSearchView.swift */,
 				3FF8A83C277E147D00A35C92 /* LicenseView.swift */,
@@ -220,6 +223,7 @@
 				3FF8A82C277CF77100A35C92 /* CoinList.swift in Sources */,
 				3FF8A80C2773ECE900A35C92 /* Vincit_Rising_Star_v1App.swift in Sources */,
 				3FF8A83D277E147E00A35C92 /* LicenseView.swift in Sources */,
+				3F66EB022BEA62D100D57F5C /* APIErrorView.swift in Sources */,
 				3FF8A81E277A18DF00A35C92 /* setup.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

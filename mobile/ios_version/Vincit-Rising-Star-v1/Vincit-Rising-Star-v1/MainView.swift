@@ -16,6 +16,9 @@ struct MainView: View {
     /// API data from CoinGecko
     @State private var assignments: Assignments?
     
+    /// Possible API Server error
+    @State private var apiError: APIError?
+    
     /// Start date for the fetch
     @State private var startDate: Date = Date(timeIntervalSince1970: 1638316800)
     /// End date for the fetch
@@ -61,6 +64,9 @@ struct MainView: View {
             // Output:
             if assignments != nil && inputOk {
                 OutputView(assignments: $assignments, startDate: $startDate, endDate: $endDate)
+            } else if self.apiError != nil {
+                APIErrorView(apiError: $apiError)
+                    .padding(10)
             }
             
             Spacer()
@@ -86,6 +92,13 @@ struct MainView: View {
                     
                     // Fetch and parse data
                     self.assignments = try Assignments(from: Int(startDate.timeIntervalSince1970), to: Int(endDate.timeIntervalSince1970), coin: coin, vs_currency: currency)
+                    // Erase any possible old error
+                    self.apiError = nil
+                    
+                } catch let error as APIError {
+                    // Server returned an error - save it to show description for the user
+                    self.apiError = error
+                    
                 } catch {
                     // An error occurred, print it into console
                     print(error.localizedDescription)

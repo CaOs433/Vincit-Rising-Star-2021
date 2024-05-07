@@ -49,7 +49,15 @@ extension Assignments {
         
         init(from: Int, to: Int, coin: String, vs_currency: String) throws {
             if let url = URL(string: "https://api.coingecko.com/api/v3/coins/\(coin)/market_chart/range?vs_currency=\(vs_currency)&from=\(from)&to=\(to)") {
-                try self.init(data: try Data(contentsOf: url))
+                let dataFromUrl: Data = try Data(contentsOf: url)
+                
+                do {
+                    try self.init(data: dataFromUrl)
+                } catch {
+                    print("Error initializing RAW data: ", error)
+                    throw try APIError.init(data: dataFromUrl)
+                }
+                
             } else {
                 throw "Couldn't construct the range url"
             }
@@ -336,5 +344,42 @@ extension Assignments.RAW {
 
         // Should not trade
         return Assignments.C(should_trade: false)
+    }
+}
+
+/// Error object for an error returned by the CoinGecko API server
+struct APIError: Codable, Error {
+    let error: APIError.Error
+    
+    /// Parse from encoded JSON data
+    init(data: Data) throws {
+        let parsedData: APIError = try JSONDecoder().decode(APIError.self, from: data)
+        print("APIError occurred: ", parsedData.humanReadableDescription)
+        self = parsedData
+    }
+    
+    /// For SwiftUI Previews
+    init(error: APIError.Error) {
+        self.error = error
+    }
+    
+    struct Error: Codable {
+        let status: Status
+    }
+
+    struct Status: Codable {
+        let timestamp: String
+        let error_code: Int
+        let error_message: String
+    }
+    
+    var humanReadableDescription: String {
+        let status = self.error.status
+        return """
+        the Server returned an error:
+        Timestamp: \(status.timestamp),
+        Error Code: \(status.error_code),
+        Error Message: \(status.error_message)
+        """
     }
 }
